@@ -12,6 +12,7 @@
     "new:view": "node ./scripts/generateView"
   },
   "dependencies": {
+    "@types/js-cookie": "^2.2.2",
     "axios": "^0.19.0",
     "core-js": "^2.6.5",
     "element-ui": "^2.12.0",
