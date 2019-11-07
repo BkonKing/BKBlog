@@ -1,6 +1,6 @@
 import { login } from '@/api/module/login'
 const types = {
-  NEWS_LIST: 'NEWS_LIST'
+  NEWS_LIST: ' '
 }
 const user = {
   state: {
