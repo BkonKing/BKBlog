@@ -5,6 +5,7 @@ import store from './store/store'
 //
 import 'normalize.css/normalize.css'
 import ElementUI from 'element-ui'
+import './permission.js'
 import 'element-ui/lib/theme-chalk/index.css'
 // import './registerServiceWorker'
 // import '@/styles/var.scss'

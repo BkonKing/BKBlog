@@ -1,9 +1,9 @@
 import request from '../axios'
 
-export function login (params: object) {
+export function login (data: object) {
   return request({
-    url: '/basic/login',
-    method: 'get',
-    params: params
+    url: '/signin',
+    method: 'post',
+    data: data
   })
 }

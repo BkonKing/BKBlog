@@ -7,7 +7,7 @@ const service = axios.create({
   timeout: 60000,
   baseURL: process.env.BASE_URL,
   // 表示跨域请求时是否需要使用凭证（允许保存cookie）
-  withCredentials: true,
+  // withCredentials: true,
   // 请求参数的格式，放在body里面
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'

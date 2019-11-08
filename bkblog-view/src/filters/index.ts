@@ -33,7 +33,7 @@ export function timeAgo(time: number) {
  * @param {number} num
  * @param {number} digits
  */
-export function numberFormatter(num, digits) {
+export function numberFormatter(num:number, digits:number) :string {
   const si = [
     { value: 1E18, symbol: 'E' },
     { value: 1E15, symbol: 'P' },
@@ -54,7 +54,7 @@ export function numberFormatter(num, digits) {
  * 10000 => "10,000"
  * @param {number} num
  */
-export function toThousandFilter(num) {
+export function toThousandFilter(num:number) {
   return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
 }
 
@@ -62,6 +62,6 @@ export function toThousandFilter(num) {
  * Upper case first char
  * @param {String} string
  */
-export function uppercaseFirst(string) {
+export function uppercaseFirst(string:string) {
   return string.charAt(0).toUpperCase() + string.slice(1)
 }
