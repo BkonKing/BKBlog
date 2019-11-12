@@ -1,4 +1,4 @@
-# bkblog-view
+# bkblogviews
 
 ## Project setup
 ```

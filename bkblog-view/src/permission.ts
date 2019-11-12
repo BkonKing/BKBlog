@@ -1,5 +1,5 @@
-import router from './routes/router.ts'
-import store from './store/store.ts'
+import router from './router'
+import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
@@ -19,6 +19,7 @@ router.beforeEach(async (to, from, next) => {
 
   // determine whether the user has logged in
   const hasToken = getToken()
+  next()
 
   if (hasToken) {
     if (to.path === '/login') {

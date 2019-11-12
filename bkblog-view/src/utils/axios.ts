@@ -1,6 +1,6 @@
 // src/api/axios.js
 import axios from 'axios'
-import router from '../routes/router'
+import router from '../router'
 import { Message, Loading } from 'element-ui'
 const service = axios.create({
   // 设置超时时间

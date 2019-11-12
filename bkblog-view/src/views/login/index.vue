@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import { Vue, Emit, Component } from 'vue-property-decorator'
-import { login } from '@/api/module/login'
+import { login } from '@/api/login'
 @Component
 export default class loginPage extends Vue {
   imgUrl: string = '@/assets/logo.png';
@@ -66,9 +66,9 @@ export default class loginPage extends Vue {
   handleLogin () {
     (this.$refs['loginForm'] as HTMLFormElement).validate((valid: any) => {
       if (valid) {
-        login(this.loginForm).then(res => {
-          console.log(res);
-        })
+        // login(this.loginForm).then((res: any): void => {
+        //   console.log(res)
+        // })
       }
     })
   }

@@ -1,4 +1,4 @@
-import { login } from '@/api/module/login'
+import { login } from '@/api/login'
 const types = {
   NEWS_LIST: ' '
 }
