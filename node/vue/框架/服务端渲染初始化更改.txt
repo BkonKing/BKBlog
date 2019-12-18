@@ -1,0 +1,17 @@
+entry-client.js
+  const { app, router, store } = createApp()
+  if (window.__INITIAL_STATE__) {
+      store.replaceState(window.__INITIAL_STATE__)
+  }
+  router.onReady(() => {
+      app.$mount('#app')
+  })
+1、window.__INITIAL_STATE__
+  服务端渲染，当使用 template 时，context.state将自动序列化为 `window.__INITIAL_STATE__`，并注入 HTML
+  服务端ssr https://ssr.vuejs.org/zh/guide/data.html#数据预取存储容器-data-store
+2、router.onReady
+  router.onReady(callback, [errorCallback])
+  该方法把一个回调排队，在路由完成初始导航时调用，这意味着它可以解析所有的异步进入钩子和路由初始化相关联的异步组件。
+  这可以有效确保服务端渲染时服务端和客户端输出的一致。
+3、store.replaceState(state: Object)
+  替换 store 的根状态，仅用状态合并或时光旅行调试。显示得替换掉store，没有通过mutation

@@ -1,0 +1,39 @@
+context: path.resolve(__dirname, '../'),
+entry:  __dirname + "/src/main.js", // 已多次提及的唯一入口文件
+output: {
+  path: __dirname + "/public", // 打包后的文件存放的地方
+  filename: "bundle.js" // 打包后输出文件的文件名
+}
+
+1、context
+  基础目录，绝对路径，用于从配置中解析入口起点(entry point)和 loader
+  默认使用当前目录，但是推荐在配置中传递一个值。这使得你的配置独立于 CWD(current working directory - 当前执行路径)。
+2、entry
+  string | [string] | object { <key>: string | [string] } | (function: () => string | [string] | object { <key>: string | [string] })
+  起点或是应用程序的起点入口。从这个起点开始，应用程序启动执行。如果传递一个数组，那么数组的每一项都会执行。
+  简单规则：每个 HTML 页面都有一个入口起点。单页应用(SPA)：一个入口起点，多页应用(MPA)：多个入口起点。
+  entry: {
+    home: './home.js',
+    about: './about.js',
+    contact: './contact.js'
+  }
+  动态入口
+    利用函数返回来实现
+3、output
+  path：output 目录对应一个绝对路径。
+  publicPath：指定在浏览器中所引用的「此输出目录对应的公开 URL」(cdn,服务器地址,本地html地址)
+    该选项的值是以 runtime(运行时) 或 loader(载入时) （按需加载(on-demand-load)或加载外部资源(external resources)（如图片、文件等））所创建的每个 URL 为前缀。因此，在多数情况下，此选项的值都会以 / 结束。
+  filename：此选项决定了每个输出 bundle 的名称。这些 bundle 将写入到 output.path 选项指定的目录下
+    注意此选项被称为文件名，但是你还是可以使用像 'js/[name]/bundle.js' 这样的文件夹结构。
+    注意，此选项不会影响那些「按需加载 chunk」的输出文件。对于这些文件，请使用 output.chunkFilename 选项来控制输出。通过 loader 创建的文件也不受影响。在这种情况下，你必须尝试 loader 特定的可用选项。
+    模板	       描述
+    [hash]       模块标识符(module identifier)的 hash（模式可以设置）
+    [chunkhash]  chunk 内容的 hash
+    [name]       模块名称
+    [id]         模块标识符(module identifier)
+    [query]      模块的 query，例如，文件名 ? 后面的字符串
+    [function]   返回一个包含上面表格中替换信息的对象
+  chunkFilename：此选项决定了非入口(non-entry) chunk 文件的名称。取值跟filename一样
+    注意，这些文件名需要在 runtime 根据 chunk 发送的请求去生成。因此，需要在 webpack runtime 输出 bundle 值时，将 chunk id 的值对应映射到占位符(如 [name] 和 [chunkhash])。这会增加文件大小，并且在任何 chunk 的占位符值修改后，都会使 bundle 失效。
+    默认使用 [id].js 或从 output.filename 中推断出的值（[name] 会被预先替换为 [id] 或 [id].）。
+
