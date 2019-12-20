@@ -1,0 +1,43 @@
+hot：启用 webpack 的 模块热替换 功能(boolean)
+  注意，必须有 webpack.HotModuleReplacementPlugin 才能完全启用 HMR。如果 webpack 或 webpack-dev-server 是通过 --hot 选项启动的，那么这个插件会被自动添加，所以你可能不需要把它添加到 webpack.config.js 中
+host：指定使用一个 host。默认是 localhost(string)
+  如果你希望服务器外部可访问，host: '0.0.0.0'
+  webpack-dev-server --host 0.0.0.0
+port：指定要监听请求的端口号(number)
+  webpack-dev-server --port 8080
+open： 在 server 启动后打开浏览器。默认禁用。(boolean string)
+  如果没有提供浏览器则打开默认浏览器,例如'Google Chrome'
+  webpack-dev-server --open (//'Chrome')
+
+
+overlay：当出现编译器错误或警告时，在浏览器中显示全屏覆盖层。默认禁用。(boolean object: { boolean errors, boolean warnings })
+  overlay: true // 只显示编译错误
+  overlay: {
+    warnings: true, // 显示警告
+    errors: true // 显示错误
+  }
+compress：一切服务都启用 gzip 压缩(boolean)
+quiet：启用 devServer.quiet 后，除了初始启动信息之外的任何内容都不会被打印到控制台。这也意味着来自 webpack 的错误或警告在控制台不可见。(boolean)
+  webpack-dev-server --quiet
+publicPath：此路径下的打包文件可在浏览器中访问(string)
+  假设服务器运行在 http://localhost:8080 并且 output.filename 被设置为 bundle.js。默认 devServer.publicPath 是 '/'，所以你的包(bundle)可以通过 http://localhost:8080/bundle.js 访问。
+  确保 devServer.publicPath 总是以斜杠(/)开头和结尾。
+  也可以使用一个完整的 URL。这是 模块热替换 所必需的。
+  publicPath: 'http://localhost:8080/'
+clientLogLevel：（重新加载，错误，热更新）控制台显示的日志等级(string: 'none' | 'info' | 'error' | 'warning')
+  当使用内联模式(inline mode)时，会在开发工具(DevTools)的控制台(console)显示消息，例如：在重新加载之前，在一个错误之前，或者 模块热替换(Hot Module Replacement) 启用时。默认值是 info。
+  webpack-dev-server --client-log-level none
+historyApiFallback：当使用 HTML5 History API 时，任意的 404 响应都可能需要被替代为 index.html。
+  默认禁用，historyApiFallback: true 启用
+  通过传入一个对象，比如使用 rewrites 这个选项，此行为可进一步地控制
+  historyApiFallback: {
+    rewrites: [
+      { from: /^\/$/, to: '/views/landing.html' },
+      { from: /^\/subpage/, to: '/views/subpage.html' },
+      { from: /./, to: '/views/404.html' }
+    ]
+    rewrites: [{
+      from: /.*/,
+      to: path.posix.join(config.dev.assetsPublicPath(打包的地址), 'index.html')
+    }]
+  }

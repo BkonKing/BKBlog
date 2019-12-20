@@ -15,3 +15,6 @@ path.join([...paths])
 区别
 1、join是把各个path片段连接在一起， resolve把'／'当成根目录
 2、join直接拼接字段，resolve解析路径并返回
+
+path.posix.join
+path.posix 兼容win32和posix的写法
