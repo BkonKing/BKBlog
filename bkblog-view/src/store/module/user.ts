@@ -1,4 +1,8 @@
-import { login } from '@/api/login'
+import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators'
+import { login } from '@/api/user'
+import { getToken, setToken, removeToken } from '@/utils/auth'
+import store from '@/store'
+
 const types = {
   NEWS_LIST: ' '
 }
