@@ -1,4 +1,5 @@
 const merge = require('webpack-merge');
+const webpack = require('webpack');
 const baseWebpackConfig = require('./webpack.config.base');
 const portfinder = require('portfinder'); // 自动获取端口
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
@@ -26,9 +27,62 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     ]
   },
   devServer: {
+    port: '3000', //默认是8080
+    quiet: false, //默认不启用
+    inline: true, //默认开启 inline 模式，如果设置为false,开启 iframe 模式
+    stats: "errors-only", //终端仅打印 error
+    overlay: false, //默认不启用
+    //日志等级 silent(等同于none，none即将被弃用),info显示所有信息，error显示错误信息，warning显示警告以上信息
+    clientLogLevel: "warning",
+    compress: true, //是否启用 gzip 压缩
+    hot: true, //热更新
+    // 当使用 HTML5 History API 时，任意的 404 响应都可能需要被替代为 index.html(vue单文件)。默认禁用
+    historyApiFallback: {
+      // 重写控制
+      rewrites: [{
+        from: /.*/,
+        to: path.posix.join('./', 'index.html') // posix兼容32位写法
+      },],
+    },
+    // 前端模拟数据
+    // 请求拦截，app为请求参数
+    before(app) {
+      apiMocker(app, path.resolve('./mock/mocker.js'))
+    },
+    // 代理解决跨域
+    proxy: {
+      '/api': {
+        target: 'http://localhost:4000',
+        pathRewrite: {
+          '/api': ''
+        }
+      }
+    },
+    /* proxy: [{
+      'context': ['/api','/user'], //pathRewrite: api => api
+      target: baseUrl,
+      changeOrigin: true
+    }] */
     quiet: true //对于FriendlyErrorsPlugin是必要的，关闭所有的错误日志记录
   },
-  plugins: {
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      filename: 'index.html', //打包后的文件名
+      config: config.template, // html中可以读取配置信息
+      path: ''
+    }),
+    new CopyWebpackPlugin([
+      {
+        from: 'public/js/*.js',
+        to: path.resolve(__dirname, 'dist', 'js'),
+        flatten: true, // 设置为 true，那么它只会拷贝文件，而不会把文件夹路径都拷贝上
+      },
+    ]),
+    new webpack.HotModuleReplacementPlugin(), //热更新插件
+    //当开启 HMR 的时候使用该插件会显示模块的相对路径，建议用于开发环境。
+    //HMR在更新时在控制台中显示正确的文件名
+    new webpack.NamedModulesPlugin()
     /* new BundleAnalyzerPlugin({
       //  可以是`server`，`static`或`disabled`。
       //  在`server`模式下，分析器将启动HTTP服务器来显示软件包报告。
@@ -59,7 +113,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       statsOptions: null,
       logLevel: 'info' //日志级别。可以是'信息'，'警告'，'错误'或'沉默'。
     }), */
-  }
+    // 局部刷新，不是整个页面刷新
+    // 在入口文件中加以下代码
+    // if(module && module.hot) {
+    //     module.hot.accept()
+    // }
+  ]
   //...其它的一些配置
 });
 
