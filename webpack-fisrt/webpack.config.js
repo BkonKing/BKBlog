@@ -121,7 +121,7 @@ module.exports = {
       rewrites: [{
         from: /.*/,
         to: path.posix.join('./', 'index.html') // posix兼容32位写法
-      }, ],
+      },],
     },
     // 前端模拟数据
     // 请求拦截，app为请求参数
@@ -182,6 +182,7 @@ module.exports = {
       // },
       // hash: true //是否加上hash，默认是 false（附加到所有包含的脚本和CSS文件中）
     }),
+    // 默认删除dist
     new CleanWebpackPlugin(),
     // 不删除某些文件
     // new CleanWebpackPlugin({
@@ -228,11 +229,16 @@ module.exports = {
     // 在入口文件中加以下代码
     // if(module && module.hot) {
     //     module.hot.accept()
+    // 指定文件
+    // module.hot.accept('./print.js', function () {
+    //   console.log('Accepting the updated printMe module!');
+    //   printMe();
+    // })
     // }
-    new webpack.HotModuleReplacementPlugin(), //热更新插件
+    new webpack.HotModuleReplacementPlugin(), //热更新插件，也能对css局部刷新，vue等热更新需要vue-loader相对应的loader
     //当开启 HMR 的时候使用该插件会显示模块的相对路径，建议用于开发环境。
     //HMR在更新时在控制台中显示正确的文件名
-    new webpack.NamedModulesPlugin(), 
+    new webpack.NamedModulesPlugin(),
     // 在编译出现错误时，使用 NoEmitOnErrorsPlugin 来跳过输出阶段。这样可以确保输出资源不会包含错误
     // new webpack.NoEmitOnErrorsPlugin(),
     // 定义环境变量
@@ -242,6 +248,8 @@ module.exports = {
     // 如果 value 是一个对象，正常对象定义即可
     // 如果 key 中有 typeof，它只针对 typeof 调用定义
     new webpack.DefinePlugin({
+      // process.env变量
+      'process.env.NODE_ENV': JSON.stringify('production'),
       DEV: JSON.stringify('dev'), //字符串
       FLAG: 'true' //FLAG 是个布尔类型
     })

@@ -26,6 +26,7 @@ module.exports = {
           // webpack.config.js 中进行babel配置，则不需要.babelrc文件
           // 如果有.babelrc文件，下面配置则不生效，尽管.babelrc为空webpack有配置也会报错
           // options: {
+          //   babelrc: false,// 不采用.babelrc的配置
           //   presets: ["@babel/preset-env"],
           //   plugins: [
           //     [

@@ -1,4 +1,5 @@
 {
+   //import() 语法，需要 @babel/plugin-syntax-dynamic-import 的插件支持，但是因为当前 @babel/preset-env 预设中已经包含了 @babel/plugin-syntax-dynamic-import
   "presets": ["@babel/preset-env"],
   "plugins": [
       [
