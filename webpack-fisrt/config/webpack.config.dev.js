@@ -28,11 +28,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   },
   devServer: {
     port: '3000', //默认是8080
+    // quiet: true 对于FriendlyErrorsPlugin是必要的，关闭所有的错误日志记录
+    // 启用后除了初始启动信息之外的任何内容都不会被打印到控制台
     quiet: false, //默认不启用
     inline: true, //默认开启 inline 模式，如果设置为false,开启 iframe 模式
-    stats: "errors-only", //终端仅打印 error
-    overlay: false, //默认不启用
+    stats: "errors-only", //终端仅打印 error，当启用了 quiet 或者是 noInfo 时，此属性不起作用。
+    overlay: false, //默认不启用，当编译出错时，会在浏览器窗口全屏输出错误，默认是关闭的。
     //日志等级 silent(等同于none，none即将被弃用),info显示所有信息，error显示错误信息，warning显示警告以上信息
+    //当使用内联模式时，在浏览器的控制台将显示消息，如：在重新加载之前，在一个错误之前，或者模块热替换启用时。
     clientLogLevel: "warning",
     compress: true, //是否启用 gzip 压缩
     hot: true, //热更新
@@ -63,7 +66,6 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       target: baseUrl,
       changeOrigin: true
     }] */
-    quiet: true //对于FriendlyErrorsPlugin是必要的，关闭所有的错误日志记录
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -81,7 +83,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     ]),
     new webpack.HotModuleReplacementPlugin(), //热更新插件
     //当开启 HMR 的时候使用该插件会显示模块的相对路径，建议用于开发环境。
-    //HMR在更新时在控制台中显示正确的文件名
+    //HMR在更新时在控制台中显示正确的文件名，mode为dev默认开启
     new webpack.NamedModulesPlugin()
     /* new BundleAnalyzerPlugin({
       //  可以是`server`，`static`或`disabled`。

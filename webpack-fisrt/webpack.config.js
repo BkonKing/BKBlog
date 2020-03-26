@@ -19,6 +19,10 @@ module.exports = {
     filename: 'bundle.[hash:9].js',
     publicPath: config.publicPath //通常是CDN地址,或者默认‘/'
   },
+  /* mode: development --> process.env.NODE_ENV = development
+    mode: production --> process.env.NODE_ENV = production
+    默认情况下 --> process.env.NODE_ENV = production */
+  // 或者启动命令时NODE_ENV=production（或者scripts中）
   mode: isDev ? 'development' : 'production',
   module: {
     rules: [
@@ -248,7 +252,8 @@ module.exports = {
     // 如果 value 是一个对象，正常对象定义即可
     // 如果 key 中有 typeof，它只针对 typeof 调用定义
     new webpack.DefinePlugin({
-      // process.env变量
+      // process.env.NODE_ENV 就必须要了解 process，process 是 node 的全局变量，并且 process 有 env 这个属性，但是没有 NODE_ENV 这个属性。
+      // process.env变量(webpack 3 及其更低版本中需要使用，替代mode)
       'process.env.NODE_ENV': JSON.stringify('production'),
       DEV: JSON.stringify('dev'), //字符串
       FLAG: 'true' //FLAG 是个布尔类型

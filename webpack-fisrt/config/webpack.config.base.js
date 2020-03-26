@@ -10,17 +10,25 @@ function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 module.exports = {
-  entry: './src/index.js', //webpack的默认配置
+  entry: './src/index.js', //webpack的默认配置，可以是一个字符串，一个数组或是一个对象
   output: {
     path: path.resolve(__dirname, 'dist'), //必须是绝对路径
     filename: 'bundle.[hash:9].js',
     publicPath: config.publicPath //通常是CDN地址,或者默认‘/'
   },
-  mode: isDev ? 'development' : 'production',
+  //development：将 process.env.NODE_ENV 的值设置为 development，启用 NamedChunksPlugin 和 NamedModulesPlugin
+  //production：将 process.env.NODE_ENV 的值设置为 production，启用 FlagDependencyUsagePlugin, FlagIncludedChunksPlugin, ModuleConcatenationPlugin, NoEmitOnErrorsPlugin, OccurrenceOrderPlugin, SideEffectsFlagPlugin 和 UglifyJsPlugin
+  // 或者启动命令时NODE_ENV=production（或者scripts中）
+  mode: isDev ? 'development' : 'production', //默认为production
   module: {
+    //loader 的执行顺序是从右向左执行的
+    //enforce 参数，其值可以为: pre(优先执行) 或 post (滞后执行)
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.jsx?$/,// 匹配规则
+        // 可以是一个字符串，例如上面的 use: 'babel-loader'
+        // use 字段可以是一个数组，例如处理CSS文件是，use: ['style-loader', 'css-loader']
+        // use 数组的每一项既可以是字符串也可以是一个对象，当我们需要在webpack 的配置文件中对 loader 进行配置，就需要将其编写为一个对象，并且在此对象的 options 字段中进行配置
         use: {
           loader: 'babel-loader',
           // webpack.config.js 中进行babel配置，则不需要.babelrc文件
@@ -77,6 +85,8 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|gif|jpeg|webp|svg|eot|ttf|woff|woff2)$/,
+        //我们可以使用 url-loader 或者 file-loader 来处理本地的资源文件。
+        //url-loader 和 file-loader 的功能类似，但是 url-loader 可以指定在文件大小小于指定的限制时，返回 DataURL。
         use: [
           {
             loader: 'url-loader',
@@ -102,7 +112,8 @@ module.exports = {
       }
     ]
   },
-  devtool: 'cheap-module-eval-source-map', //开发环境下使用
+  //我们一般不会直接将 .map 文件部署到CDN，因为会直接映射到源码，更希望将.map 文件传到错误解析系统，然后根据上报的错误信息，直接解析到出错的源码位置。
+  devtool: 'cheap-module-eval-source-map',
   //resolve 配置 webpack 如何寻找模块所对应的文件。
   resolve: {
     // resolve.modules 配置 webpack 去哪些目录下寻找第三方模块，默认情况下，只会去 node_modules 下寻找
@@ -165,6 +176,9 @@ module.exports = {
     // 如果 value 是一个对象，正常对象定义即可
     // 如果 key 中有 typeof，它只针对 typeof 调用定义
     new webpack.DefinePlugin({
+      // process.env.NODE_ENV 就必须要了解 process，process 是 node 的全局变量，并且 process 有 env 这个属性，但是没有 NODE_ENV 这个属性。
+      // process.env.NODE_ENV变量(webpack 3 及其更低版本中需要使用，替代mode)
+      'process.env.NODE_ENV': JSON.stringify('production'),
       'process.env': configFile, // 读取文件配置
       DEV: JSON.stringify('dev'), //字符串
       FLAG: 'true' //FLAG 是个布尔类型
