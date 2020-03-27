@@ -1,0 +1,53 @@
+// npm init -y
+// -y 默认确定
+// npm install webpack webpack-cli -D
+
+// cross-env 运行跨平台设置和使用环境变量的脚本
+
+// speed-measure-webpack-plugin 插件可以测量各个插件和loader所花费的时间
+
+1.exclude/include
+2. cache-loader
+3.happypack
+4.thread-loader
+5.开启 JS 多进程压缩
+6.HardSourceWebpackPlugin
+7.noParse
+8.resolve
+9.IgnorePlugin
+webpack 的内置插件，作用是忽略第三方包指定目录。
+例如: moment (2.24.0版本) 会将所有本地化内容（语言包）和核心功能一起打包，我们就可以使用 IgnorePlugin 在打包时忽略本地化内容。
+//webpack.config.js
+module.exports = {
+    //...
+    plugins: [
+        //忽略 moment 下的 ./locale 目录
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    ]
+}
+在使用的时候，如果我们需要指定语言，那么需要我们手动的去引入语言包，例如，引入中文语言包:
+import moment from 'moment';
+import 'moment/locale/zh-cn';// 手动引入
+10.externals
+我们可以将一些JS文件存储在 CDN 上(减少 Webpack打包出来的 js 体积)，在 index.html 中通过 <script> 标签引入
+我们希望在使用时，仍然可以通过 import 的方式去引用(如 import $ from 'jquery')，并且希望 webpack 不会对其进行打包，此时就可以配置 externals。
+11.DllPlugin
+如果所有的JS文件都打成一个JS文件，会导致最终生成的JS文件很大，这个时候，我们就要考虑拆分 bundles
+DllPlugin 和 DLLReferencePlugin 可以实现拆分 bundles，并且可以大大提升构建速度，
+DllPlugin 和 DLLReferencePlugin 都是 webpack 的内置模块。
+12.抽离公共代码借助
+抽离公共代码对于单页应用和多页应该在配置上没有什么区别，都是配置在 optimization.splitChunks 中。
+webpack-bundle-analyzer 进一步优化
+查看打包后文件大小
+new BundleAnalyzerPlugin()
+13.webpack自身的优化
+tree-shaking
+scope hosting 作用域提升
+babel配置的优化
+
+/**
+ * 开启 JS 多进程压缩
+ * 虽然很多 webpack 优化的文章上会提及多进程压缩的优化，不管是 webpack-parallel-uglify-plugin 或者是 uglifyjs-webpack-plugin 配置 parallel。
+ * 没必要单独安装这些插件，它们并不会让你的 Webpack 构建速度提升。
+ * 当前 Webpack 默认使用的是 TerserWebpackPlugin，默认就开启了多进程和缓存，构建时，你的项目中可以看到 terser 的缓存文件 node_modules/.cache/terser-webpack-plugin。
+ */
