@@ -13,7 +13,7 @@ module.exports = {
   entry: './src/index.js', //webpack的默认配置，可以是一个字符串，一个数组或是一个对象
   output: {
     path: path.resolve(__dirname, 'dist'), //必须是绝对路径
-    filename: 'bundle.[hash:9].js',
+    filename: 'bundle.[hash:9].js', //[name]指代entry对象中的key，默认的话为main
     publicPath: config.publicPath //通常是CDN地址,或者默认‘/'
   },
   //development：将 process.env.NODE_ENV 的值设置为 development，启用 NamedChunksPlugin 和 NamedModulesPlugin
