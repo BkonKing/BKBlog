@@ -138,7 +138,12 @@ module.exports = {
      * 复制代码resolve.mainFields 默认配置是 ['browser', 'main']，即首先找对应依赖 package.json 中的 brower 字段，如果没有，找 main 字段。
      * 如：import 'bootstrap' 默认情况下，找得是对应的依赖的 package.json 的 main 字段指定的文件，即 dist/js/bootstrap。
      */
-    mainFields: ['style', 'main'] // 先找style
+    mainFields: ['style', 'main'], // 先找style
+    /**
+     * 导入默认的文件
+     * ./文件夹 自动查找文件夹下的index.js
+     */
+    mainFiles: ['index'] // 默认index
   },
   plugins: [
     // ProvidePlugin 的作用就是不需要 import 或 require 就可以在项目中到处使用。(自动加载模块)
